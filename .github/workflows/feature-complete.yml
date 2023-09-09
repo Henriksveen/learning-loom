@@ -14,6 +14,9 @@ jobs:
         run: |
           # Extract the tag name from the ref
           tag="${GITHUB_REF#refs/tags/}"
+          branch_name=${GITHUB_REF#refs/heads/}
+          echo "Tag name is $tag"
+          echo "Branch name is $branch_name"
           if [[ "$tag" == feature-completed-* ]]; then
             echo "Feature is completed, triggering the workflow"
             # Add your workflow steps here
