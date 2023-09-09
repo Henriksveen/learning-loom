@@ -17,10 +17,12 @@ jobs:
         id: extract_branch
         run: |
           tag="${GITHUB_REF#refs/tags/}"
-          echo "Tag: $tag"
-          git for-each-ref --format '%(contents:subject)' "refs/tags/$tag
-          TAG_DESCRIPTION=$(git for-each-ref --format '%(contents:subject)' "refs/tags/$tag)
+          
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          git tag -l --format='%(contents:subject)' $tag
+          TAG_DESCRIPTION=$(git tag -l --format='%(contents:subject)' $tag)
           echo "Tag Description: $TAG_DESCRIPTION"
+          
           # Extract branch name from the description using grep and a regular expression
           BRANCH_NAME=$(echo "$TAG_DESCRIPTION" | grep -oP 'Branch: \K.*')
           echo "Branch Name: $BRANCH_NAME"
