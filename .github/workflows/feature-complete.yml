@@ -14,10 +14,10 @@ jobs:
         id: extract_branch
         run: |
           TAG="${GITHUB_REF#refs/tags/}"
-          TAG_DESCRIPTION=$(git tag -l --format='%(contents)' $(TAG))
+          TAG_DESCRIPTION=$(git tag -l --format='%(contents)' "$TAG")
           
           # Extract branch name from the description using grep and a regular expression
-          BRANCH_NAME=$(echo "$(TAG_DESCRIPTION)" | grep -oP 'Branch: \K[\w/#]+')
+          BRANCH_NAME=$(echo "$TAG_DESCRIPTION" | grep -oP 'Branch: \K[\w/#]+')
           
           # Set the extracted branch name as an output for later steps
           echo "::set-output name=branch_name::$BRANCH_NAME"
