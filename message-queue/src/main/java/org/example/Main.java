@@ -6,12 +6,12 @@ class MessageQueue {
 
     public synchronized void pushMessage(String message) {
         queue.add(message);
-        notify(); // Notify consumers that a new message is available.
+        notify();
     }
 
     public synchronized String popMessage() throws InterruptedException {
         while (queue.isEmpty()) {
-            wait(); // Wait for messages if the queue is empty.
+            wait();
         }
         return queue.poll();
     }
@@ -26,7 +26,6 @@ class Producer implements Runnable {
 
     @Override
     public void run() {
-        // Generate and push messages to the queue.
         for (int i = 0; i < 10; i++) {
             String message = "Message " + i;
             messageQueue.pushMessage(message);
@@ -44,7 +43,6 @@ class Consumer implements Runnable {
 
     @Override
     public void run() {
-        // Consume messages from the queue.
         while (true) {
             try {
                 String message = messageQueue.popMessage();
@@ -60,7 +58,6 @@ public class Main {
     public static void main(String[] args) {
         MessageQueue messageQueue = new MessageQueue();
 
-        // Start a producer and a consumer thread.
         Thread producerThread = new Thread(new Producer(messageQueue));
         Thread consumerThread = new Thread(new Consumer(messageQueue));
 
