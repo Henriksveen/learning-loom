@@ -1,0 +1,22 @@
+name: Feature Completed Workflow
+
+on:
+  push:
+    tags:
+      - 'feature-completed-*'
+
+jobs:
+  check_feature_completion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if a feature is completed
+        run: |
+          # Extract the tag name from the ref
+          tag="${GITHUB_REF#refs/tags/}"
+          if [[ "$tag" == feature-completed-* ]]; then
+            echo "Feature is completed, triggering the workflow"
+            # Add your workflow steps here
+          else
+            echo "Push was not a 'feature-completed' tag, skipping the workflow"
+          fi

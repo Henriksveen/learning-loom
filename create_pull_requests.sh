@@ -3,7 +3,7 @@
 # GitHub repository details
 repository_owner="Henriksveen"     # Replace with your GitHub username or organization name
 repository_name="learning-loom"    # Replace with your repository name
-access_token="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"   # Replace with your GitHub personal access token
+access_token="token"   # Replace with your GitHub personal access token
 
 # Define the base URL for GitHub API
 base_url="https://api.github.com/repos/$repository_owner/$repository_name"
