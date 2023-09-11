@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Check if a feature is completed
+      - name: Extract Branch Name
         id: extract_branch
         run: |
           tag="${GITHUB_REF#refs/tags/}"
@@ -36,11 +36,5 @@ jobs:
           git push --set-upstream origin $BRANCH_NAME
           gh pr create --base test --head $BRANCH_NAME --title "Feature: Your Feature Name" --body "Description of your feature changes"
 
-      - name: Create Pull Request to Main
-        run: |
-          BRANCH_NAME="${{ steps.extract_branch.outputs.branch_name }}"
-          git checkout -b $BRANCH_NAME
-          git push --set-upstream origin $BRANCH_NAME
-          gh pr create --base main --head $BRANCH_NAME --title "Feature: Your Feature Name" --body "Description of your feature changes"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
