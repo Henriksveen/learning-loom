@@ -32,8 +32,6 @@ jobs:
       - name: Create Pull Request to Test
         run: |
           BRANCH_NAME="${{ steps.extract_branch.outputs.branch_name }}"
-          git checkout -b $BRANCH_NAME
-          git push --set-upstream origin $BRANCH_NAME
           gh pr create --base test --head $BRANCH_NAME --title "Feature: Your Feature Name" --body "Description of your feature changes"
 
         env:
