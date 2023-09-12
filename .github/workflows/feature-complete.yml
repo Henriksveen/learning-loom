@@ -39,7 +39,7 @@ jobs:
             category=${{ steps.extract_branch.outputs.CATEGORY }}
             release_number=${{ steps.extract_branch.outputs.RELEASE_NUMBER }}
             name=${{ steps.extract_branch.outputs.NAME }}
-            title=${category}(${release_number}): ${name}
+            title="${category}(${release_number}): ${name}"
             echo "PR title: $title"
             gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title $title --body "PR created by github actions"
           else
