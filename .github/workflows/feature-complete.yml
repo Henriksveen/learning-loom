@@ -24,14 +24,11 @@ jobs:
           echo "Tag Description: $TAG_DESCRIPTION"
           
           # Extract branch name from the description using grep and a regular expression
-          BRANCH_NAME=$(echo "$TAG_DESCRIPTION" | grep -oP 'Branch: \K.*')
-          echo "Branch Name: $BRANCH_NAME"
+          branch_name=$(echo "$TAG_DESCRIPTION" | grep -oP 'Branch: \K.*')
+          echo "Branch Name: branch_name"
           # Set the extracted branch name as an output for later steps
-          echo "branch_name=$BRANCH_NAME" >> "$GITHUB_STATE"
+          echo "BRANCH_NAME=branch_name" >> "$GITHUB_OUTPUT"
       - name: Create Pull Request to Test
         run: |
-          echo "$branch_name"
-          gh pr create --base test --head "$branch_name" --title "Feature: Your Feature Name" --body "Description of your feature changes"
-
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo ${{ steps.extract_branch.outputs.BRANCH_NAME }}"
+          gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }}" --title "Feature: Your Feature Name" --body "Description of your feature changes"
