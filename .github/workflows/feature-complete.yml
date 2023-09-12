@@ -21,14 +21,9 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           git tag -l --format='%(contents:subject)' $tag
           TAG_DESCRIPTION=$(git tag -l --format='%(contents:subject)' $tag)
-          echo "Tag Description: $TAG_DESCRIPTION"
           
-          # Extract branch name from the description using grep and a regular expression
           branch_name=$(echo "$TAG_DESCRIPTION" | grep -oP 'Branch: \K.*')
-          echo "Branch Name: branch_name"
-          # Set the extracted branch name as an output for later steps
-          echo "BRANCH_NAME=branch_name" >> "$GITHUB_OUTPUT"
+          echo "BRANCH_NAME=$branch_name" >> "$GITHUB_OUTPUT"
       - name: Create Pull Request to Test
         run: |
-          echo ${{ steps.extract_branch.outputs.BRANCH_NAME }}"
           gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }}" --title "Feature: Your Feature Name" --body "Description of your feature changes"
