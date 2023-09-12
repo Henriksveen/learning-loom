@@ -26,4 +26,4 @@ jobs:
           echo "BRANCH_NAME=$branch_name" >> "$GITHUB_OUTPUT"
       - name: Create Pull Request to Test
         run: |
-          gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }}" --title "Feature: Your Feature Name" --body "Description of your feature changes"
+          gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title "Feature: Your Feature Name" --body "Description of your feature changes"
