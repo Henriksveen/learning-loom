@@ -37,8 +37,8 @@ jobs:
         run: |
           if [ -n "${{ steps.extract_branch.outputs.AUTHOR }}" ]; then
             category=${{ steps.extract_branch.outputs.CATEGORY }}
-            release_number=${{ steps.extract_branch.outputs.CATEGORY }}
-            name=${{ steps.extract_branch.outputs.CATEGORY }}
+            release_number=${{ steps.extract_branch.outputs.RELEASE_NUMBER }}
+            name=${{ steps.extract_branch.outputs.NAME }}
             echo "category=$category"
             echo "release_number=$release_number"
             echo "name=$name"
