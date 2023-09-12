@@ -37,9 +37,9 @@ jobs:
         run: |
           if [ -n "${{ steps.extract_branch.outputs.AUTHOR }}" ]; then
             title=${{ steps.extract_branch.outputs.CATEGORY }}(${{ steps.extract_branch.outputs.RELEASE_NUMBER }}): ${{ steps.extract_branch.outputs.NAME }}
-            gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title $title
+            gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title $title --body "PR created by github actions"
           else
-            gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title ${{ steps.extract_branch.outputs.BRANCH_NAME }}
+            gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title ${{ steps.extract_branch.outputs.BRANCH_NAME }} --body "PR created by github actions"
           fi
 
         env:
