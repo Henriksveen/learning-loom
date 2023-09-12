@@ -42,8 +42,7 @@ jobs:
             echo "category=$category"
             echo "release_number=$release_number"
             echo "name=$name"
-            title="$category($release_number): $name"
-            title=${{ steps.extract_branch.outputs.CATEGORY }}(${{ steps.extract_branch.outputs.RELEASE_NUMBER }}): ${{ steps.extract_branch.outputs.NAME }}
+            title='"${category}"("${release_number}"): "${name}"'
             gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title $title --body "PR created by github actions"
           else
             gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title ${{ steps.extract_branch.outputs.BRANCH_NAME }} --body "PR created by github actions"
