@@ -27,3 +27,5 @@ jobs:
       - name: Create Pull Request to Test
         run: |
           gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title "Feature: Your Feature Name" --body "Description of your feature changes"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
