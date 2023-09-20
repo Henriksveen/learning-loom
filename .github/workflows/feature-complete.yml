@@ -35,14 +35,13 @@ jobs:
 
       - name: Create Pull Request to Test
         run: |
-          if [ -n "${{ steps.extract_branch.outputs.AUTHOR }}" ]; then
-            category=${{ steps.extract_branch.outputs.CATEGORY }}
-            release_number=${{ steps.extract_branch.outputs.RELEASE_NUMBER }}
-            name=${{ steps.extract_branch.outputs.NAME }}
-            title="${{ steps.extract_branch.outputs.CATEGORY }}(${{ steps.extract_branch.outputs.RELEASE_NUMBER }}): ${{ steps.extract_branch.outputs.NAME }}"
+          category=${{ steps.extract_outputs.outputs.CATEGORY }}
+          if [ -n $category ]; then
+            title="${{ steps.extract_outputs.outputs.CATEGORY }}(${{ steps.extract_outputs.outputs.RELEASE_NUMBER }}): ${{ steps.extract_outputs.outputs.NAME }}"
             gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
-          else
-            gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title ${{ steps.extract_branch.outputs.BRANCH_NAME }} --body "PR created by github actions"
+            if [ "$category" = "hotfix" ]; then
+              gh pr create --base main --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
+            fi
           fi
 
         env:
