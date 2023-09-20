@@ -28,19 +28,22 @@ jobs:
             echo "AUTHOR=${COMPONENTS[0]}" >> "$GITHUB_OUTPUT"
             CATEGORY_UC_FIRST="${COMPONENTS[1]^}"
             echo "CATEGORY=$CATEGORY_UC_FIRST" >> "$GITHUB_OUTPUT"
-            echo "RELEASE_NUMBER=${COMPONENTS[2]}" >> "$GITHUB_OUTPUT"
-            echo "NAME=${COMPONENTS[3]}" >> "$GITHUB_OUTPUT"
+            echo "RELEASE_TAG=${COMPONENTS[2]}" >> "$GITHUB_OUTPUT"
+            echo "FEATURE_NAME=${COMPONENTS[3]}" >> "$GITHUB_OUTPUT"
           fi
           echo "BRANCH_NAME=$branch_name" >> "$GITHUB_OUTPUT"
 
       - name: Create Pull Request to Test
         run: |
           category=${{ steps.extract_outputs.outputs.CATEGORY }}
+          branch_name=${{ steps.extract_outputs.outputs.BRANCH_NAME }}
+          release_tag=${{ steps.extract_outputs.outputs.RELEASE_TAG }}
+          feature_name=${{ steps.extract_outputs.outputs.FEATURE_NAME }}
           if [ -n $category ]; then
-            title="${{ steps.extract_outputs.outputs.CATEGORY }}(${{ steps.extract_outputs.outputs.RELEASE_NUMBER }}): ${{ steps.extract_outputs.outputs.NAME }}"
-            gh pr create --base test --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title - develop" --body "PR created by github actions"
+            title="$category($release_tag): $feature_name"
+            gh pr create --base test --head $branch_name --title "$title - develop" --body "PR created by github actions"
             if [ "$category" = "Hotfix" ]; then
-              gh pr create --base main --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title - master" --body "PR created by github actions"
+              gh pr create --base main --head $branch_name --title "$title - master" --body "PR created by github actions"
             fi
           fi
 
