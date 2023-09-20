@@ -1,0 +1,48 @@
+name: Feature Completed Workflow
+
+on:
+  push:
+    tags:
+      - 'feature-completed-*'
+
+jobs:
+  check_feature_completion:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Extract Branch Name
+        id: extract_outputs
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          git tag -l --format='%(contents:subject)' $tag
+          tag_message=$(git tag -l --format='%(contents:subject)' $tag)
+          branch_name=$(echo "$tag_message" | grep -oP 'Branch: \K.*')
+          IFS='/' read -ra COMPONENTS <<< "$branch_name"
+          
+          # Check if there are exactly 4 components
+          if [ ${#COMPONENTS[@]} -eq 4 ]; then
+            echo "AUTHOR=${COMPONENTS[0]}" >> "$GITHUB_OUTPUT"
+            CATEGORY_UC_FIRST="${COMPONENTS[1]^}"
+            echo "CATEGORY=$CATEGORY_UC_FIRST" >> "$GITHUB_OUTPUT"
+            echo "RELEASE_NUMBER=${COMPONENTS[2]}" >> "$GITHUB_OUTPUT"
+            echo "NAME=${COMPONENTS[3]}" >> "$GITHUB_OUTPUT"
+          fi
+          echo "BRANCH_NAME=$branch_name" >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request to Test
+        run: |
+          category=${{ steps.extract_outputs.outputs.CATEGORY }}
+          if [ -n $category ]; then
+            title="${{ steps.extract_outputs.outputs.CATEGORY }}(${{ steps.extract_outputs.outputs.RELEASE_NUMBER }}): ${{ steps.extract_outputs.outputs.NAME }}"
+            gh pr create --base test --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
+            if [ "$category" = "Hotfix" ]; then
+              gh pr create --base main --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
+            fi
+          fi
+
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
