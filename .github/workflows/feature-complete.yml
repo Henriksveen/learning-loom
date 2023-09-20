@@ -39,7 +39,7 @@ jobs:
           if [ -n $category ]; then
             title="${{ steps.extract_outputs.outputs.CATEGORY }}(${{ steps.extract_outputs.outputs.RELEASE_NUMBER }}): ${{ steps.extract_outputs.outputs.NAME }}"
             gh pr create --base test --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
-            if [ "$category" = "hotfix" ]; then
+            if [ "$category" = "Hotfix" ]; then
               gh pr create --base main --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
             fi
           fi
