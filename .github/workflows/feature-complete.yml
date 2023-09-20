@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Extract Branch Name
-        id: extract_branch
+        id: extract_outputs
         run: |
           tag="${GITHUB_REF#refs/tags/}"
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
@@ -38,9 +38,9 @@ jobs:
           category=${{ steps.extract_outputs.outputs.CATEGORY }}
           if [ -n $category ]; then
             title="${{ steps.extract_outputs.outputs.CATEGORY }}(${{ steps.extract_outputs.outputs.RELEASE_NUMBER }}): ${{ steps.extract_outputs.outputs.NAME }}"
-            gh pr create --base test --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
+            gh pr create --base test --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
             if [ "$category" = "hotfix" ]; then
-              gh pr create --base main --head ${{ steps.extract_branch.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
+              gh pr create --base main --head ${{ steps.extract_outputs.outputs.BRANCH_NAME }} --title "$title" --body "PR created by github actions"
             fi
           fi
 
