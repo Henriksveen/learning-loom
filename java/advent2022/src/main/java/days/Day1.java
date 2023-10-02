@@ -1,13 +1,14 @@
-package loom.learning;
+package days;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import common.FileInput;
+
 import java.util.Arrays;
 import java.util.stream.LongStream;
 
 
 public class Day1 {
+    private final FileInput fileInput = new FileInput();
+
     public static void main(String[] args) {
         new Day1().run();
     }
@@ -28,18 +29,11 @@ public class Day1 {
 
     private LongStream input() {
         return Arrays.stream(
-                inputDay1().split("\n\n")).mapToLong(
+                fileInput.read("day1.txt").split("\n\n")).mapToLong(
                 elf -> elf.lines().mapToLong(Long::parseLong).sum()
         );
     }
 
-    private String inputDay1() {
-        try {
-            return Files.readString(new File("advent2022/src/main/resources/day1.txt").toPath());
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
-    }
 
     private String inputTest() {
         return """

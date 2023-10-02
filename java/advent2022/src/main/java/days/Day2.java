@@ -1,12 +1,14 @@
-package loom.learning;
+package days;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import common.FileInput;
+
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Day2 {
+    private final FileInput fileInput = new FileInput();
+
     private static final char ROCK = 'A';
     private static final char PAPER = 'B';
     private static final char SCISSOR = 'C';
@@ -61,23 +63,15 @@ public class Day2 {
     }
 
     private int part1() {
-        return Arrays.stream(input().split("\n")).
-                mapToInt(PART_1_STRATEGY_GUIDE::get)
-                .sum();
+        return input().mapToInt(PART_1_STRATEGY_GUIDE::get).sum();
     }
 
     private int part2() {
-        return Arrays.stream(input().split("\n")).
-                mapToInt(PART_2_STRATEGY_GUIDE::get)
-                .sum();
+        return input().mapToInt(PART_2_STRATEGY_GUIDE::get).sum();
     }
 
-    private String input() {
-        try {
-            return Files.readString(new File("advent2022/src/main/resources/day2.txt").toPath());
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+    private Stream<String> input() {
+        return Arrays.stream(fileInput.read("day2.txt").split("\n"));
     }
 
     private String inputTest() {
