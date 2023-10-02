@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.stream.LongStream;
 
+
 public class Day1 {
     public static void main(String[] args) {
         new Day1().run();
@@ -25,22 +26,22 @@ public class Day1 {
         return nums[nums.length - 1] + nums[nums.length - 2] + nums[nums.length - 3];
     }
 
-    private static LongStream input() {
+    private LongStream input() {
         return Arrays.stream(
                 inputDay1().split("\n\n")).mapToLong(
                 elf -> elf.lines().mapToLong(Long::parseLong).sum()
         );
     }
 
-    private static String inputDay1() {
+    private String inputDay1() {
         try {
-            return Files.readString(new File("/home/simen/dev/code/learning-loom/java/advent2022/src/main/resources/day1.txt").toPath());
+            return Files.readString(new File("advent2022/src/main/resources/day1.txt").toPath());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
-    private static String inputTest() {
+    private String inputTest() {
         return """
                 1000
                 2000
